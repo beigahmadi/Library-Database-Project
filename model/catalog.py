@@ -1,5 +1,5 @@
 """
-LibraryCatalog class
+Catalog class
 catalog.py
 
 Class Description:
@@ -12,6 +12,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-class LibraryCatalog(db.Model):
-    __tablename__ = 'libraryCatalog'
+class Catalog(db.Model):
+    __tablename__ = 'Catalog'
 
