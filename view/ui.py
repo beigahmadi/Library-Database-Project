@@ -10,11 +10,12 @@ Last modified: March. 2025
 """
 
 class UI:
-    def __init__(self):
+    def __init__(self, controller):
+        self.controller = controller
         pass
 
     def print_ui(self):
-        prompt = (
+        prompt = input(
             "Select among the following items:\n"
             "1. Find an item in the library\n"
             "2. Request a loan from the library\n"
@@ -28,6 +29,6 @@ class UI:
         )
         if prompt == "1":
             item_name = input("Enter item name:\n ")
-
-        elif prompt == "2":
+        elif prompt == "9":
+            self.controller.insert_user()
 
