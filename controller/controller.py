@@ -15,3 +15,6 @@ class DatabaseController:
     def __init__(self, db_path):
       self.connection = sqlite3.connect(db_path)
       self.cursor = self.connection.cursor()
+
+    def search_library_database_by_title(self, title):
+        pass
