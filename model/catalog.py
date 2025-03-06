@@ -1,6 +1,6 @@
 """
 LibraryCatalog class
-libraryCatalog.py
+catalog.py
 
 Class Description:
 Class Invariant:
