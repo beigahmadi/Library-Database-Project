@@ -8,7 +8,7 @@ Author(s): Mahdi Beigahmadi, Cole Scott Robertson
 Last modified: March. 2025
 """
 from flask import Flask, request, jsonify
-from libraryCatalog import db
+from model.libraryCatalog import db
 
 app = Flask(__name__)
 
