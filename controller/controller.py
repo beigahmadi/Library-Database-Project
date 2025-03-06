@@ -1,6 +1,6 @@
 """
-Controller class
-controller.py
+DatabaseController class
+DatabaseController.py
  
 Class Description: a class controls the connection between 
 library model and library database
@@ -11,7 +11,7 @@ Last modified: March. 2025
 """
 import sqlite3
 
-class Controller:
+class DatabaseController:
     def __init__(self, db_path):
       self.connection = sqlite3.connect(db_path)
       self.cursor = self.connection.cursor()
