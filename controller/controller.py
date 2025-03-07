@@ -20,7 +20,7 @@ class DatabaseController:
    def close_connection(self):
       self.connection.close()
    
-   def search_library_database_by_title(self, title):
+   def search_library_database_by_title(self):
       pass
    
    def insert_user(self):
