@@ -17,16 +17,21 @@ class UI:
         self.controller = controller
 
     def print_ui(self):
-        while prompt is not "0":
+        prompt = ""
+        while prompt != "0":
             prompt = input(
-                "Select among the following items:\n"
+                "\n\nSelect among the following items:\n"
                 "1. User Login\n"
                 "2. Employee Login\n"
-                "0. Exit\n"
+                "0. Exit\n\n"
             )
-            if prompt is "1":
-                EmployeeView.show_employee_interface(self)
-            elif prompt is "2":
-                UserView.show_user_interface(self)
-            elif prompt is "0":
+
+            if prompt == "1":
+                UserView.show_user_interface()
+            elif prompt == "2":
+                EmployeeView.show_employee_interface(self.controller)
+            elif prompt == "0":
+                print("Exiting...")
                 exit(0)
+            else:
+                print("Invalid input, please try again.\n")

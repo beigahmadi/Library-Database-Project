@@ -15,12 +15,12 @@ class UserView:
         pass
 
     @staticmethod
-    def show_user_interface(self):
+    def show_user_interface():
         comm = input(
-            "1. Find an item in the library\n"
+            "\n\n1. Find an item in the library\n"
             "2. Borrow an item from the library\n"
-            "3. Register for an event in the library\n "
+            "3. Register for an event in the library\n"
             "4. Volunteer for the library\n"
             "5. Ask for help from a librarian\n"
-            "0. Exit\n"
+            "0. Exit\n\n"
         )
