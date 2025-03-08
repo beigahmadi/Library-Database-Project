@@ -10,9 +10,6 @@ Last modified: March. 2025
 """
 from datetime import datetime
 
-from controller import controller
-
-
 class EmployeeView:
 
     @staticmethod

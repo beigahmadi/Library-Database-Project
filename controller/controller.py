@@ -71,3 +71,13 @@ class DatabaseController:
         )
         self.connection.commit()
         print("User inserted successfully.")
+
+    def insert_volunteer_employee(self , emp_obj_holder):
+        self.cursor.execute(
+            "INSERT INTO Employee (employee_name, employee_dob, phone_number, address, employement_date, salary)"
+            " VALUES (?, ?, ?, ?, ?, ?)",
+            (emp_obj_holder[0], emp_obj_holder[1],
+             emp_obj_holder[2], emp_obj_holder[3], emp_obj_holder[4], emp_obj_holder[5])
+        )
+        self.connection.commit()
+        print("Employee added successfully.")
