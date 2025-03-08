@@ -15,7 +15,7 @@ db = SQLAlchemy()
 
 class Loan(db.Model):
     __tablename__ = 'Loan'
-    loan_id = db.Column(db.Integer, primary_key=True)
+    loan_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     record_id = db.Column(db.Integer, nullable=False, foreign_key=True)
     user_id = db.Column(db.Integer, nullable=False, foreign_key=True)
     loan_date = db.Column(db.Date, nullable=False)
@@ -25,7 +25,6 @@ class Loan(db.Model):
 
     def __init__(self, loan_id, record_id, user_id,
                  loan_date, due_date, return_date, fine_charged):
-        self.loan_id = loan_id
         self.record_id = record_id
         self.user_id = user_id
         self.loan_date = loan_date

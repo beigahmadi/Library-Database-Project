@@ -8,9 +8,33 @@ Class Invariant: Must be hidden from users
 Author(s): Mahdi Beigahmadi, Cole Scott Robertson
 Last modified: March. 2025
 """
+from datetime import datetime
+
+from controller import controller
 
 
 class EmployeeView:
+
+    @staticmethod
+    def get_data_for_insertion(controller):
+        object_holder = []
+        item = input("Please enter the item type:\n")
+        object_holder.append(item)
+        tit = input("Please enter the item title:\n")
+        object_holder.append(tit)
+        pub_date = input("Please enter the publication date (YYYY-MM-DD):\n")
+        try:
+            pub_date = datetime.strptime(pub_date, "%Y-%m-%d").date()
+            object_holder.append(pub_date)
+        except ValueError:
+            print("Invalid date format for date of publication. Please use YYYY-MM-DD.")
+            return
+        art_name = input("Please enter the artist name:\n")
+        object_holder.append(art_name)
+        pub_name = input("Please enter the name of the publisher:\n")
+        object_holder.append(pub_name)
+        controller.insert_library_database(object_holder)
+
     @staticmethod
     def show_employee_interface(controller):
         while True:
@@ -31,7 +55,7 @@ class EmployeeView:
             elif prompt == "3":
                 pass
             elif prompt == "4":
-                pass
+                EmployeeView.get_data_for_insertion(controller)
             elif prompt == "0":
                 print("Exiting employee interface...")
                 exit(0)

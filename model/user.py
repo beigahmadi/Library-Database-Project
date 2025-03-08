@@ -16,7 +16,7 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'User'
 
-    user_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     first_name = db.Column(db.Text, nullable=False)
     last_name = db.Column(db.Text, nullable=False)
     date_of_birth = db.Column(db.Date, nullable=False)

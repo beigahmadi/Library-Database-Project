@@ -9,11 +9,10 @@ Class Invariant:
 Author(s): Mahdi Beigahmadi, Cole Scott Robertson 
 Last modified: March. 2025
 """
-import sqlite3
-from datetime import date, datetime
 
 import sqlite3
 from datetime import date, datetime
+
 
 class DatabaseController:
     def __init__(self, db_path):
@@ -28,6 +27,13 @@ class DatabaseController:
         self.cursor.execute(query, (title,))
         results = self.cursor.fetchall()
         return results
+
+    def insert_library_database(self, object_holder):
+        self.cursor.execute(
+            "INSERT INTO Catalog (item_type, title, publication_date, author_or_artist, publisher) VALUES(?, ?, ?, ?, ?)",
+            (object_holder[0], object_holder[1], object_holder[2], object_holder[3], object_holder[4]))
+        self.connection.commit()
+        print("data inserted successfully.")
 
     def insert_user(self):
         first_name = input("Enter first name: ")
@@ -59,12 +65,9 @@ class DatabaseController:
             return
 
         self.cursor.execute(
-            "INSERT INTO User (first_name, last_name, date_of_birth, address, phone_number, date_joined, total_charge) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO User (first_name, last_name, date_of_birth, address, phone_number, date_joined, "
+            "total_charge) VALUES (?, ?, ?, ?, ?, ?, ?)",
             (first_name, last_name, dob, address, phone_number, date_joined, total_charge)
         )
         self.connection.commit()
         print("User inserted successfully.")
-
-       
-
-

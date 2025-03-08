@@ -15,7 +15,7 @@ db = SQLAlchemy()
 
 class Event(db.Model):
     __tablename__ = 'Event'
-    event_id = db.Column(db.Integer, primary_key=True)
+    event_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     event_name = db.Column(db.Text, nullable=False)
     event_type = db.Column(db.Text, nullable=False)
     event_location = db.Column(db.Text, nullable=False)

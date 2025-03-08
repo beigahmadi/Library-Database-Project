@@ -27,7 +27,7 @@ class UI:
             )
 
             if prompt == "1":
-                UserView.show_user_interface()
+                UserView.show_user_interface(self.controller)
             elif prompt == "2":
                 EmployeeView.show_employee_interface(self.controller)
             elif prompt == "0":

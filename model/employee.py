@@ -16,7 +16,7 @@ db = SQLAlchemy()
 class Employee(db.Model):
     __tablename__ = 'Employee'
 
-    employee_id = db.Column(db.Integer, primary_key=True)
+    employee_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     employee_name = db.Column(db.Text, nullable=False)
     empmloyee_dob = db.Column(db.Text, nullable=False)
     employee_number = db.Column(db.Text, nullable=False)
