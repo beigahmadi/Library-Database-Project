@@ -65,7 +65,9 @@ class EmployeeView:
     def library_search(self):
         title = input("Please enter the title of the book you are searching for: ")
         results = self.controller.search_library_database_by_title(title)
-        print("Search results:", results)
+        print("Search results:")
+        for tuple in results:
+            print(tuple)
 
     def item_return(self):
         pass
@@ -90,6 +92,8 @@ class EmployeeView:
 
 
     def show_employee_interface(self):
+        employee_info = self.controller.fetch_employee_info(self.id)
+        print("Welcome employee", employee_info[0], "\nYour current salary is $", employee_info[1])
         input_table = {
             '1' : self.user_insertion,
             '2' : self.library_search,
@@ -100,11 +104,11 @@ class EmployeeView:
 
         while True:
             prompt = input(
-                "\n\n1. Sign up a new user to the library\n"
+                "\n1. Sign up a new user to the library\n"
                 "2. Find an item in library database\n"
                 "3. Return a borrowed item\n"
                 "4. Add an item to the library\n"
                 "0. Exit\n\n"
             )
-            action = input_table.get(prompt, lambda: print("Invalid input, please try again.\n"))
+            action = input_table.get(prompt, lambda: print("Invalid input, please try again."))
             action()

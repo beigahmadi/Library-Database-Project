@@ -25,8 +25,17 @@ class DatabaseController:
     def search_library_database_by_title(self, title):
         query = "SELECT * FROM Catalog WHERE title LIKE ?"
         self.cursor.execute(query, ('%' + title + '%',))
-        results = self.cursor.fetchall()
-        return results
+        return self.cursor.fetchall()
+    
+    def fetch_user_info(self, id):
+        query = "SELECT first_name, last_name, total_charge FROM User WHERE user_id = ?"
+        self.cursor.execute(query, (id,))
+        return self.cursor.fetchone()
+    
+    def fetch_employee_info(self, id):
+        query = "SELECT employee_name, salary FROM Employee WHERE employee_id = ?"
+        self.cursor.execute(query, (id,))
+        return self.cursor.fetchone()
 
     def insert_library_database(self, object_holder):
         self.cursor.execute(

@@ -20,7 +20,9 @@ class UserView:
     def library_search(self):
         title = input("Please enter the title you prefer to search: ")
         results = self.controller.search_library_database_by_title(title)
-        print("Search results:", results)
+        print("Search results:")
+        for tuple in results:
+            print(tuple)
 
     def library_borrow(self):
         pass
@@ -39,6 +41,8 @@ class UserView:
         pass
 
     def show_user_interface(self):
+        user_info = self.controller.fetch_user_info(self.id)
+        print("Welcome user", user_info[0] + ' ' + user_info[1], "\nYou currently have $", user_info[2], "in outstanding charges.")
         input_table = {
             '1' : self.library_search,
             '2' : self.library_borrow,
@@ -50,14 +54,14 @@ class UserView:
 
         while True:
             prompt = input(
-                "\n\n1. Find an item in the library\n"
+                "\n1. Find an item in the library\n"
                 "2. Borrow an item from the library\n"
                 "3. Register for an event in the library\n"
                 "4. Volunteer for the library\n"
                 "5. Ask for help from a librarian\n"
                 "0. Exit\n\n"
             )
-            action = input_table.get(prompt, lambda: print("Invalid input, please try again.\n"))
+            action = input_table.get(prompt, lambda: print("Invalid input, please try again."))
             action()
 
     
