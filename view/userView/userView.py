@@ -18,7 +18,7 @@ class UserView:
         self.controller = controller
     
     def library_search(self):
-        title = input("Please enter the title you prefer to search:\n")
+        title = input("Please enter the title you prefer to search: ")
         results = self.controller.search_library_database_by_title(title)
         print("Search results:", results)
 
@@ -29,36 +29,39 @@ class UserView:
         pass
 
     def register_for_volunteer(self):
-        emp_obj_holder = []
-        emp_name = input("Please enter your full name:\n")
-        emp_obj_holder.append(emp_name)
-        dob_input = input("Enter your date of birth (YYYY-MM-DD):\n")
+        obj_holder = []
+        obj_holder.append(input("Please enter your full name: "))
+
+        dob_input = input("Enter your date of birth (YYYY-MM-DD): ")
         if not dob_input:
             dob_input = date.today()
         else:
-            try:
-                dob_input = datetime.strptime(dob_input, "%Y-%m-%d").date()
-            except ValueError:
-                print("Invalid date format. Please use YYYY-MM-DD.")
-                return
-        emp_obj_holder.append(dob_input)
-        emp_phone = input("Please enter your phone number:\n")
-        emp_obj_holder.append(emp_phone)
-        emp_address = input("Please enter your address:\n")
-        emp_obj_holder.append(emp_address)
+            while True:
+                try:
+                    dob_input = datetime.strptime(dob_input, "%Y-%m-%d").date()
+                    break
+                except ValueError:
+                    print("Invalid date format. Please use YYYY-MM-DD.\n")
+                    dob_input = input("Enter your date of birth (YYYY-MM-DD): ")
+        obj_holder.append(dob_input)
+
+        obj_holder.append(input("Please enter your phone number: "))
+        obj_holder.append(input("Please enter your address: "))
+
         date_joined_input = input("Enter date of account creation (YYYY-MM-DD) [leave blank for today]: ")
         if not date_joined_input:
             date_joined = date.today()
-            emp_obj_holder.append(date_joined)
         else:
-            try:
-                date_joined = datetime.strptime(date_joined_input, "%Y-%m-%d").date()
-                emp_obj_holder.append(date_joined)
-            except ValueError:
-                print("Invalid date format. Please use YYYY-MM-DD.")
-                return
-        emp_obj_holder.append(0.0)
-        self.controller.insert_volunteer_employee(emp_obj_holder)
+            while True:
+                try:
+                    date_joined = datetime.strptime(date_joined_input, "%Y-%m-%d").date()
+                    break
+                except ValueError:
+                    date_joined_input = input("Enter date of account creation (YYYY-MM-DD) [leave blank for today]: ")
+        obj_holder.append(date_joined)
+
+        obj_holder.append(0.0)
+        self.controller.insert_volunteer_employee(obj_holder)
 
     def request_help():
         pass
