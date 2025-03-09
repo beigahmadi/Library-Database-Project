@@ -17,15 +17,16 @@ class UserView:
         self.id = id
         self.controller = controller
     
-    def library_search():
+    def library_search(self):
+        title = input("Please enter the title you prefer to search:\n")
+        results = self.controller.search_library_database_by_title(title)
+        print("Search results:", results)
+
+    def library_borrow(self):
         pass
 
-    def library_borrow():
+    def event_register(self):
         pass
-
-    def event_register():
-        pass
-
 
     def register_for_volunteer(self):
         emp_obj_holder = []
@@ -83,21 +84,5 @@ class UserView:
             )
             action = input_table.get(prompt, lambda: print("Invalid input, please try again.\n"))
             action()
-        
-        # if comm == "1":
-        #     title_for_search = input("Please enter the title you prefer to search:\n")
-        #     results = controller.search_library_database_by_title(title_for_search)
-        #     print("Search results:", results)
-        # if comm == "2":
-        #     pass
-        # elif comm == "3":
-        #     pass
-        # elif comm == "4":
-        #     UserView.register_for_volunteer(controller)
-        # elif comm == "5":
-        #     pass
-        # elif comm == "0":
-        #     print("Exiting user interface...")
-        #     exit(0)
 
     
