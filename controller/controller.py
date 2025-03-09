@@ -44,6 +44,14 @@ class DatabaseController:
         self.connection.commit()
         print("data inserted successfully.")
 
+    def insert_library_record(self, id):
+        self.cursor.execute(
+            "INSERT INTO Record (item_id, available) VALUES (?, ?)",
+            (id, True)
+        )
+        self.connection.commit()
+        print("Record inserted successfully.")
+
     def insert_user(self, obj_holder):
         self.cursor.execute(
             "INSERT INTO User (first_name, last_name, date_of_birth, address, phone_number, date_joined, "

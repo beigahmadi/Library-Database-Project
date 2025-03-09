@@ -90,6 +90,20 @@ class EmployeeView:
         object_holder.append(pub_name)
         self.controller.insert_library_database(object_holder)
 
+    def record_insertion(self):
+        id = input("Please enter the item ID: ")
+        
+        while True:
+            num = input("Please enter the number of copies to insert: ")
+            try:
+                num = int(num)
+                break
+            except ValueError:
+                print("Invalid number of copies. Please enter an integer.\n")
+
+        for _ in range(num):
+            gecks = 12
+
 
     def show_employee_interface(self):
         employee_info = self.controller.fetch_employee_info(self.id)
