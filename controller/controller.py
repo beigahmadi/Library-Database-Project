@@ -11,7 +11,7 @@ Last modified: March. 2025
 """
 
 import sqlite3
-from datetime import date, datetime
+from datetime import date, timedelta
 
 
 class DatabaseController:
@@ -25,7 +25,40 @@ class DatabaseController:
     def search_library_database_by_title(self, title):
         query = "SELECT * FROM Catalog WHERE title LIKE ?"
         self.cursor.execute(query, ('%' + title + '%',))
-        return self.cursor.fetchall()
+
+        results = []
+        for tuple in self.cursor.fetchall():
+            query = "SELECT COUNT(*) FROM Record WHERE item_id = ? AND available = True"
+            self.cursor.execute(query, (tuple[0],))
+            total = str(self.cursor.fetchone()[0]) + '/'
+            query = "SELECT COUNT(*) FROM Record WHERE item_id = ?"
+            self.cursor.execute(query, (tuple[0],))
+            total += str(self.cursor.fetchone()[0])
+            tuple = tuple + (total,)
+            results.append(tuple)
+        return results
+    
+    def search_library_database_by_id(self, id):
+        query = "SELECT * FROM Catalog WHERE item_id = ?"
+        self.cursor.execute(query, (id,))
+        return self.cursor.fetchone()
+    
+    def fetch_library_loans(self, id):
+        self.cursor.execute(
+            "SELECT loan_id, record_id, julianday(due_date) - julianday(loan_date) AS date_diff FROM Loan WHERE user_id = ?",
+            (id,)
+        )
+        results = []
+        for tuple in self.cursor.fetchall():
+            self.cursor.execute(
+                "SELECT C.item_id, C.item_type, C.title FROM Catalog C JOIN Record R ON C.item_id = R.item_id WHERE R.record_id = ?",
+                (tuple[1],)
+            )
+            item = self.cursor.fetchone()
+            result = (tuple[0], item[0], item[1], item[2], tuple[2])
+            results.append(result)
+
+        return results
     
     def fetch_user_info(self, id):
         query = "SELECT first_name, last_name, total_charge FROM User WHERE user_id = ?"
@@ -42,7 +75,7 @@ class DatabaseController:
             "INSERT INTO Catalog (item_type, title, publication_date, author_or_artist, publisher) VALUES(?, ?, ?, ?, ?)",
             (object_holder[0], object_holder[1], object_holder[2], object_holder[3], object_holder[4]))
         self.connection.commit()
-        print("data inserted successfully.")
+        print("Data inserted successfully.")
 
     def insert_library_record(self, id):
         self.cursor.execute(
@@ -73,6 +106,23 @@ class DatabaseController:
         )
         self.connection.commit()
         print("Employee added successfully.")
+
+    def borrow_library_record(self, user_id, item_id):
+        self.cursor.execute("SELECT record_id FROM Record WHERE item_id = ? AND available = True", (item_id,))
+        record_id = self.cursor.fetchone()[0]
+
+        if record_id:
+            self.cursor.execute("UPDATE Record SET available = False WHERE record_id = ?", (record_id,))
+            self.connection.commit()
+
+            self.cursor.execute(
+                "INSERT INTO Loan (record_id, user_id, loan_date, due_date) VALUES (?, ?, ?, ?)",
+                (record_id, user_id, str(date.today()), str(date.today() + timedelta(days=21)))
+            )
+            self.connection.commit()
+            print("Item borrowed successfully.")
+        else:
+            print("No copies available.")
 
     def validate_id(self, id, user):
         if user:

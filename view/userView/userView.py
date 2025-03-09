@@ -18,14 +18,19 @@ class UserView:
         self.controller = controller
     
     def library_search(self):
-        title = input("Please enter the title you prefer to search: ")
+        title = input("Please enter the title of the item you are searching for: ")
         results = self.controller.search_library_database_by_title(title)
-        print("Search results:")
+        print("Search results (ID, Type, Name, Publication Date, Author/Artist, Publisher, Available/Total Copies):")
         for tuple in results:
             print(tuple)
 
     def library_borrow(self):
-        pass
+        while True:
+            item_id = input("Please input the ID of the item you wish to borrow: ")
+            if self.controller.search_library_database_by_id(item_id) is not None:
+                break
+            print("Invalid ID. Please enter a valid item ID.")
+        self.controller.borrow_library_record(self.id, item_id)
 
     def event_register(self):
         pass
@@ -37,8 +42,13 @@ class UserView:
         obj_holder.append(0.0)
         self.controller.insert_volunteer_employee(obj_holder, self.id)
 
-    def request_help():
+    def request_help(self):
         pass
+
+    def fetch_loans(self):
+        print("Loan ID, Item ID, Type, Name, Days Remaining")
+        for tuple in self.controller.fetch_library_loans(self.id):
+            print(tuple)
 
     def show_user_interface(self):
         user_info = self.controller.fetch_user_info(self.id)
@@ -49,6 +59,7 @@ class UserView:
             '3' : self.event_register,
             '4' : self.register_for_volunteer,
             '5' : self.request_help,
+            '6' : self.fetch_loans,
             '0' : lambda: (print("Exiting..."), exit(0)[-1])
         }
 
@@ -59,6 +70,7 @@ class UserView:
                 "3. Register for an event in the library\n"
                 "4. Volunteer for the library\n"
                 "5. Ask for help from a librarian\n"
+                "6. View existing library loans\n"
                 "0. Exit\n\n"
             )
             action = input_table.get(prompt, lambda: print("Invalid input, please try again."))

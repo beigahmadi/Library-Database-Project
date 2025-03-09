@@ -63,9 +63,9 @@ class EmployeeView:
         self.controller.insert_user(obj_holder)
     
     def library_search(self):
-        title = input("Please enter the title of the book you are searching for: ")
+        title = input("Please enter the title of the item you are searching for: ")
         results = self.controller.search_library_database_by_title(title)
-        print("Search results:")
+        print("Search results (ID, Type, Name, Publication Date, Author/Artist, Publisher, Available/Total Copies):")
         for tuple in results:
             print(tuple)
 
@@ -91,7 +91,11 @@ class EmployeeView:
         self.controller.insert_library_database(object_holder)
 
     def record_insertion(self):
-        id = input("Please enter the item ID: ")
+        while True:
+            id = input("Please enter the item ID: ")
+            if self.controller.search_library_database_by_id(id) is not None:
+                break
+            print("Invalid ID. Please enter a valid item ID.")
         
         while True:
             num = input("Please enter the number of copies to insert: ")
@@ -102,7 +106,7 @@ class EmployeeView:
                 print("Invalid number of copies. Please enter an integer.\n")
 
         for _ in range(num):
-            gecks = 12
+            self.controller.insert_library_record(id)
 
 
     def show_employee_interface(self):
@@ -113,6 +117,7 @@ class EmployeeView:
             '2' : self.library_search,
             '3' : self.item_return,
             '4' : self.item_insertion,
+            '5' : self.record_insertion,
             '0' : lambda: (print("Exiting..."), exit(0)[-1])
         }
 
@@ -122,6 +127,7 @@ class EmployeeView:
                 "2. Find an item in library database\n"
                 "3. Return a borrowed item\n"
                 "4. Add an item to the library\n"
+                "5. Add a record to the library\n"
                 "0. Exit\n\n"
             )
             action = input_table.get(prompt, lambda: print("Invalid input, please try again."))
