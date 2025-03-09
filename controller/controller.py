@@ -23,8 +23,8 @@ class DatabaseController:
         self.connection.close()
 
     def search_library_database_by_title(self, title):
-        query = "SELECT * FROM Catalog WHERE title = ?"
-        self.cursor.execute(query, (title,))
+        query = "SELECT * FROM Catalog WHERE title LIKE ?"
+        self.cursor.execute(query, ('%' + title + '%',))
         results = self.cursor.fetchall()
         return results
 
