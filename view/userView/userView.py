@@ -10,8 +10,6 @@ Last modified: March. 2025
 """
 from datetime import date, datetime
 
-from view.employeeView.employeeView import EmployeeView
-
 
 class UserView:
 
@@ -72,4 +70,5 @@ class UserView:
             pass
         if comm == "0":
             print("Exiting user interface...")
+            exit(0)
         UserView.show_user_interface(controller)
