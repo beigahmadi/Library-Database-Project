@@ -13,8 +13,22 @@ from datetime import date, datetime
 
 class UserView:
 
-    @staticmethod
-    def register_for_volunteer(controller):
+    def __init__ (self, id, controller):
+        self.id = id
+        self.controller = controller
+
+    
+    def library_search():
+        pass
+
+    def library_borrow():
+        pass
+
+    def event_register():
+        pass
+
+
+    def register_for_volunteer(self):
         emp_obj_holder = []
         emp_name = input("Please enter your full name:\n")
         emp_obj_holder.append(emp_name)
@@ -44,31 +58,47 @@ class UserView:
                 print("Invalid date format. Please use YYYY-MM-DD.")
                 return
         emp_obj_holder.append(0.0)
-        controller.insert_volunteer_employee(emp_obj_holder)
+        self.controller.insert_volunteer_employee(emp_obj_holder)
 
-    @staticmethod
-    def show_user_interface(controller):
-        comm = input(
-            "\n\n1. Find an item in the library\n"
-            "2. Borrow an item from the library\n"
-            "3. Register for an event in the library\n"
-            "4. Volunteer for the library\n"
-            "5. Ask for help from a librarian\n"
-            "0. Exit\n\n"
-        )
-        if comm == "1":
-            title_for_search = input("Please enter the title you prefer to search:\n")
-            results = controller.search_library_database_by_title(title_for_search)
-            print("Search results:", results)
-        if comm == "2":
-            pass
-        if comm == "3":
-            pass
-        if comm == "4":
-            UserView.register_for_volunteer(controller)
-        if comm == "5":
-            pass
-        if comm == "0":
-            print("Exiting user interface...")
-            exit(0)
-        UserView.show_user_interface(controller)
+    def request_help():
+        pass
+
+    def show_user_interface():
+        input_table = {
+            '1' : self.library_search,
+            '2' : self.library_borrow,
+            '3' : self.event_register,
+            '4' : self.register_for_volunteer,
+            '5' : self.request_help,
+            '0' : lambda: (print("Exiting..."), exit(0)[-1])
+        }
+
+        while True:
+            prompt = input(
+                "\n\n1. Find an item in the library\n"
+                "2. Borrow an item from the library\n"
+                "3. Register for an event in the library\n"
+                "4. Volunteer for the library\n"
+                "5. Ask for help from a librarian\n"
+                "0. Exit\n\n"
+            )
+            action = input_table.get(prompt, lambda: print("Invalid input, please try again.\n"))
+            action()
+        
+        # if comm == "1":
+        #     title_for_search = input("Please enter the title you prefer to search:\n")
+        #     results = controller.search_library_database_by_title(title_for_search)
+        #     print("Search results:", results)
+        # if comm == "2":
+        #     pass
+        # elif comm == "3":
+        #     pass
+        # elif comm == "4":
+        #     UserView.register_for_volunteer(controller)
+        # elif comm == "5":
+        #     pass
+        # elif comm == "0":
+        #     print("Exiting user interface...")
+        #     exit(0)
+
+    
