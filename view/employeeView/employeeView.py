@@ -10,6 +10,7 @@ Last modified: March. 2025
 """
 from datetime import datetime
 
+
 class EmployeeView:
 
     @staticmethod
@@ -34,27 +35,27 @@ class EmployeeView:
 
     @staticmethod
     def show_employee_interface(controller):
-        while True:
-            prompt = input(
-                "\n\n1. Sign up a new user to the library\n"
-                "2. Find an item in library database\n"
-                "3. Return a borrowed item\n"
-                "4. Add an item to the library\n"
-                "0. Exit\n\n"
-            )
+        prompt = input(
+            "\n\n1. Sign up a new user to the library\n"
+            "2. Find an item in library database\n"
+            "3. Return a borrowed item\n"
+            "4. Add an item to the library\n"
+            "0. Exit\n\n"
+        )
 
-            if prompt == "1":
-                controller.insert_user()
-            elif prompt == "2":
-                title_for_search = input("Please enter the title you prefer to search:\n")
-                results = controller.search_library_database_by_title(title_for_search)
-                print("Search results:", results)
-            elif prompt == "3":
-                pass
-            elif prompt == "4":
-                EmployeeView.get_data_for_insertion(controller)
-            elif prompt == "0":
-                print("Exiting employee interface...")
-                exit(0)
-            else:
-                print("Invalid input, please try again.\n")
+        if prompt == "1":
+            controller.insert_user()
+        elif prompt == "2":
+            title_for_search = input("Please enter the title you prefer to search:\n")
+            results = controller.search_library_database_by_title(title_for_search)
+            print("Search results:", results)
+        elif prompt == "3":
+            pass
+        elif prompt == "4":
+            EmployeeView.get_data_for_insertion(controller)
+        elif prompt == "0":
+            print("Exiting employee interface...")
+            exit(0)
+        else:
+            print("Invalid input, please try again.\n")
+        EmployeeView.show_employee_interface(controller)
