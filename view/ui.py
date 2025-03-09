@@ -33,7 +33,7 @@ class UI:
                 break
             print("Invalid ID, please try again.\n")
         employee = EmployeeView(id, self.controller)
-        employee.show_user_interface()
+        employee.show_employee_interface()
 
 
     def print_ui(self):

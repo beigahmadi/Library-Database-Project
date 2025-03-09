@@ -81,7 +81,7 @@ class EmployeeView:
                 object_holder.append(pub_date)
                 break
             except ValueError:
-                print("Invalid date format for date of publication. Please use YYYY-MM-DD.\n")
+                print("Invalid date format for date of publication. Please use YYYY-MM-DD.")
         art_name = input("Please enter the artist's name: ")
         object_holder.append(art_name)
         pub_name = input("Please enter the publisher's name: ")
@@ -89,7 +89,7 @@ class EmployeeView:
         self.controller.insert_library_database(object_holder)
 
 
-    def show_employee_interface(self, controller):
+    def show_employee_interface(self):
         input_table = {
             '1' : self.user_insertion,
             '2' : self.library_search,
