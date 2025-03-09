@@ -30,38 +30,10 @@ class UserView:
 
     def register_for_volunteer(self):
         obj_holder = []
-        obj_holder.append(input("Please enter your full name: "))
-
-        dob_input = input("Enter your date of birth (YYYY-MM-DD): ")
-        if not dob_input:
-            dob_input = date.today()
-        else:
-            while True:
-                try:
-                    dob_input = datetime.strptime(dob_input, "%Y-%m-%d").date()
-                    break
-                except ValueError:
-                    print("Invalid date format. Please use YYYY-MM-DD.\n")
-                    dob_input = input("Enter your date of birth (YYYY-MM-DD): ")
-        obj_holder.append(dob_input)
-
-        obj_holder.append(input("Please enter your phone number: "))
-        obj_holder.append(input("Please enter your address: "))
-
-        date_joined_input = input("Enter date of account creation (YYYY-MM-DD) [leave blank for today]: ")
-        if not date_joined_input:
-            date_joined = date.today()
-        else:
-            while True:
-                try:
-                    date_joined = datetime.strptime(date_joined_input, "%Y-%m-%d").date()
-                    break
-                except ValueError:
-                    date_joined_input = input("Enter date of account creation (YYYY-MM-DD) [leave blank for today]: ")
-        obj_holder.append(date_joined)
+        obj_holder.append(str(date.today()))
 
         obj_holder.append(0.0)
-        self.controller.insert_volunteer_employee(obj_holder)
+        self.controller.insert_volunteer_employee(obj_holder, self.id)
 
     def request_help():
         pass

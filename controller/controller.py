@@ -35,21 +35,24 @@ class DatabaseController:
         self.connection.commit()
         print("data inserted successfully.")
 
-    def insert_user(self, first_name, last_name, dob, address, phone_number, date_joined, total_charge):
+    def insert_user(self, obj_holder):
         self.cursor.execute(
             "INSERT INTO User (first_name, last_name, date_of_birth, address, phone_number, date_joined, "
             "total_charge) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (first_name, last_name, dob, address, phone_number, date_joined, total_charge)
+            (obj_holder)
         )
         self.connection.commit()
         print("User inserted successfully.")
 
-    def insert_volunteer_employee(self, emp_obj_holder):
+    def insert_volunteer_employee(self, obj_holder, id):
+        self.cursor.execute("SELECT first_name, last_name, date_of_birth, phone_number, address FROM User WHERE user_id = ?", (id,))
+        results = self.cursor.fetchone()
+
+        employee_name = results[0] + ' ' + results[1]
         self.cursor.execute(
             "INSERT INTO Employee (employee_name, employee_dob, phone_number, address, employement_date, salary)"
             " VALUES (?, ?, ?, ?, ?, ?)",
-            (emp_obj_holder[0], emp_obj_holder[1],
-             emp_obj_holder[2], emp_obj_holder[3], emp_obj_holder[4], emp_obj_holder[5])
+            (employee_name, results[2], results[3], results[4], obj_holder[0], obj_holder[1],)
         )
         self.connection.commit()
         print("Employee added successfully.")
