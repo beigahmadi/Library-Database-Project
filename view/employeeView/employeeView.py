@@ -22,7 +22,7 @@ class EmployeeView:
         obj_holder.append(input("Enter first name: "))
         obj_holder.append(input("Enter last name: "))
 
-        dob_input = input("Enter your date of birth (YYYY-MM-DD): ")
+        dob_input = input("Enter date of birth (YYYY-MM-DD): ")
         if not dob_input:
             dob_input = date.today()
         else:
@@ -32,7 +32,7 @@ class EmployeeView:
                     break
                 except ValueError:
                     print("Invalid date format. Please use YYYY-MM-DD.\n")
-                    dob_input = input("Enter your date of birth (YYYY-MM-DD): ")
+                    dob_input = input("Enter date of birth (YYYY-MM-DD): ")
         obj_holder.append(dob_input)
 
         obj_holder.append(input("Enter address: "))
@@ -52,7 +52,7 @@ class EmployeeView:
         obj_holder.append(date_joined)
 
         while True:
-            total_charge = input("Enter total charges due on account:  ")
+            total_charge = input("Enter total charges due on account: ")
             try:
                 total_charge = float(total_charge) if total_charge else 0.0
                 obj_holder.append(total_charge)
@@ -82,9 +82,9 @@ class EmployeeView:
                 break
             except ValueError:
                 print("Invalid date format for date of publication. Please use YYYY-MM-DD.\n")
-        art_name = input("Please enter the artist name: ")
+        art_name = input("Please enter the artist's name: ")
         object_holder.append(art_name)
-        pub_name = input("Please enter the name of the publisher: ")
+        pub_name = input("Please enter the publisher's name: ")
         object_holder.append(pub_name)
         self.controller.insert_library_database(object_holder)
 
