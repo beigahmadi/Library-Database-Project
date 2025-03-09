@@ -16,7 +16,6 @@ class UserView:
     def __init__ (self, id, controller):
         self.id = id
         self.controller = controller
-
     
     def library_search():
         pass
@@ -63,7 +62,7 @@ class UserView:
     def request_help():
         pass
 
-    def show_user_interface():
+    def show_user_interface(self):
         input_table = {
             '1' : self.library_search,
             '2' : self.library_borrow,

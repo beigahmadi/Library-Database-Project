@@ -13,8 +13,11 @@ from datetime import datetime, date
 
 class EmployeeView:
 
-    @staticmethod
-    def get_data_for_insertion(controller):
+    def __init__ (self, id, controller):
+        self.id = id
+        self.controller = controller
+
+    def get_data_for_insertion(self, controller):
         object_holder = []
         item = input("Please enter the item type:\n")
         object_holder.append(item)
@@ -33,8 +36,7 @@ class EmployeeView:
         object_holder.append(pub_name)
         controller.insert_library_database(object_holder)
 
-    @staticmethod
-    def get_data_for_user_insertion(controller):
+    def get_data_for_user_insertion(self, controller):
         first_name = input("Enter first name:\n ")
         last_name = input("Enter last name:\n ")
         dob_str = input("Enter date of birth (YYYY-MM-DD):\n ")
@@ -65,8 +67,7 @@ class EmployeeView:
         controller.insert_user(first_name, last_name, dob,
                                address, phone_number, date_joined, total_charge)
 
-    @staticmethod
-    def show_employee_interface(controller):
+    def show_employee_interface(self, controller):
         prompt = input(
             "\n\n1. Sign up a new user to the library\n"
             "2. Find an item in library database\n"

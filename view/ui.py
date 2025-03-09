@@ -18,12 +18,22 @@ class UI:
         
 
     def user_login(self):
-        id = input("Please enter your User ID: ")
-        print("Hello world.")
+        while True:
+            id = input("Please enter your User ID: ")
+            if self.controller.validate_id(id, True):
+                break
+            print("Invalid ID, please try again.\n")
+        user = UserView(id, self.controller)
+        user.show_user_interface()
 
     def employee_login(self):
-        id = input("Please enter your Employee ID: ")
-        UserView.show_user_interface(self.controller)
+        while True:
+            id = input("Please enter your Employee ID: ")
+            if self.controller.validate_id(id, False):
+                break
+            print("Invalid ID, please try again.\n")
+        employee = EmployeeView(id, self.controller)
+        employee.show_user_interface()
 
 
     def print_ui(self):

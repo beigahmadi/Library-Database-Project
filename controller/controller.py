@@ -44,7 +44,7 @@ class DatabaseController:
         self.connection.commit()
         print("User inserted successfully.")
 
-    def insert_volunteer_employee(self , emp_obj_holder):
+    def insert_volunteer_employee(self, emp_obj_holder):
         self.cursor.execute(
             "INSERT INTO Employee (employee_name, employee_dob, phone_number, address, employement_date, salary)"
             " VALUES (?, ?, ?, ?, ?, ?)",
@@ -53,3 +53,11 @@ class DatabaseController:
         )
         self.connection.commit()
         print("Employee added successfully.")
+
+    def validate_id(self, id, user):
+        if user:
+            query = "SELECT 1 FROM User WHERE user_id = ?"
+        else:
+            query = "SELECT 1 FROM Employee WHERE employee_id = ?"
+        self.cursor.execute(query, (id,))
+        return self.cursor.fetchone() is not None
