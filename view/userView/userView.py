@@ -59,7 +59,9 @@ class UserView:
             "0. Exit\n\n"
         )
         if comm == "1":
-            EmployeeView.get_data_for_insertion(controller)
+            title_for_search = input("Please enter the title you prefer to search:\n")
+            results = controller.search_library_database_by_title(title_for_search)
+            print("Search results:", results)
         if comm == "2":
             pass
         if comm == "3":
