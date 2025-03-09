@@ -8,7 +8,7 @@ Class Invariant: Must be hidden from users
 Author(s): Mahdi Beigahmadi, Cole Scott Robertson
 Last modified: March. 2025
 """
-from datetime import datetime
+from datetime import datetime, date
 
 
 class EmployeeView:
@@ -34,6 +34,38 @@ class EmployeeView:
         controller.insert_library_database(object_holder)
 
     @staticmethod
+    def get_data_for_user_insertion(controller):
+        first_name = input("Enter first name:\n ")
+        last_name = input("Enter last name:\n ")
+        dob_str = input("Enter date of birth (YYYY-MM-DD):\n ")
+        try:
+            dob = datetime.strptime(dob_str, "%Y-%m-%d").date()
+        except ValueError:
+            print("Invalid date format for date of birth. Please use YYYY-MM-DD.\n")
+            return
+
+        address = input("Enter address:\n ")
+        phone_number = input("Enter phone number:\n ")
+        date_joined_input = input("Enter date of account creation (YYYY-MM-DD) [leave blank for today]:\n ")
+        if not date_joined_input:
+            date_joined = date.today()
+        else:
+            try:
+                date_joined = datetime.strptime(date_joined_input, "%Y-%m-%d").date()
+            except ValueError:
+                print("Invalid date format. Please use YYYY-MM-DD.")
+                return
+
+        total_charge_input = input("Enter total charges due on account:\n ")
+        try:
+            total_charge = float(total_charge_input) if total_charge_input else 0.0
+        except ValueError:
+            print("Invalid total charge. Please enter a valid number.")
+            return
+        controller.insert_user(first_name, last_name, dob,
+                               address, phone_number, date_joined, total_charge)
+
+    @staticmethod
     def show_employee_interface(controller):
         prompt = input(
             "\n\n1. Sign up a new user to the library\n"
@@ -44,7 +76,7 @@ class EmployeeView:
         )
 
         if prompt == "1":
-            controller.insert_user()
+            EmployeeView.get_data_for_user_insertion(controller)
         elif prompt == "2":
             title_for_search = input("Please enter the title you prefer to search:\n")
             results = controller.search_library_database_by_title(title_for_search)
