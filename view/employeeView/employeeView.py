@@ -9,9 +9,7 @@ Author(s): Mahdi Beigahmadi, Cole Scott Robertson
 Last modified: March. 2025
 """
 from datetime import datetime, date
-
-from controller.search import SearchController
-
+import csv
 
 class EmployeeView:
     def __init__(self, id, controller):
@@ -103,6 +101,12 @@ class EmployeeView:
                 print("Invalid input. Please try again.\n")
 
         print("\nSearch results (ID, Type, Name, Publication Date, Author/Artist, Publisher, Available/Total Copies):")
+        headers = ["ID", "Type", "Name", "Publication Date", "Author/Artist", "Publisher", "Available/Total Copies"]
+
+        with open("output.csv", "w", newline="") as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(headers)
+            writer.writerows(results)
         if results:
             for record in results:
                 print(record)
