@@ -9,40 +9,21 @@ Class Invariant:
 Author(s): Mahdi Beigahmadi, Cole Scott Robertson 
 Last modified: March. 2025
 """
-
 import sqlite3
 from datetime import date, timedelta
 
+from controller.search import SearchController
 
-class DatabaseController:
+
+class DatabaseController(SearchController):
     def __init__(self, db_path):
+        super().__init__(db_path)
         self.connection = sqlite3.connect(db_path)
         self.cursor = self.connection.cursor()
 
     def close_connection(self):
         self.connection.close()
 
-    def search_library_database_by_title(self, title):
-        query = "SELECT * FROM Catalog WHERE title LIKE ?"
-        self.cursor.execute(query, ('%' + title + '%',))
-
-        results = []
-        for tuple in self.cursor.fetchall():
-            query = "SELECT COUNT(*) FROM Record WHERE item_id = ? AND available = True"
-            self.cursor.execute(query, (tuple[0],))
-            total = str(self.cursor.fetchone()[0]) + '/'
-            query = "SELECT COUNT(*) FROM Record WHERE item_id = ?"
-            self.cursor.execute(query, (tuple[0],))
-            total += str(self.cursor.fetchone()[0])
-            tuple = tuple + (total,)
-            results.append(tuple)
-        return results
-    
-    def search_library_database_by_id(self, id):
-        query = "SELECT * FROM Catalog WHERE item_id = ?"
-        self.cursor.execute(query, (id,))
-        return self.cursor.fetchone()
-    
     def fetch_library_loans(self, id):
         self.cursor.execute(
             "SELECT loan_id, record_id, julianday(due_date) - julianday(loan_date) AS date_diff FROM Loan WHERE user_id = ?",
@@ -59,12 +40,12 @@ class DatabaseController:
             results.append(result)
 
         return results
-    
+
     def fetch_user_info(self, id):
         query = "SELECT first_name, last_name, total_charge FROM User WHERE user_id = ?"
         self.cursor.execute(query, (id,))
         return self.cursor.fetchone()
-    
+
     def fetch_employee_info(self, id):
         query = "SELECT employee_name, salary FROM Employee WHERE employee_id = ?"
         self.cursor.execute(query, (id,))
@@ -95,7 +76,8 @@ class DatabaseController:
         print("User inserted successfully.")
 
     def insert_volunteer_employee(self, obj_holder, id):
-        self.cursor.execute("SELECT first_name, last_name, date_of_birth, phone_number, address FROM User WHERE user_id = ?", (id,))
+        self.cursor.execute(
+            "SELECT first_name, last_name, date_of_birth, phone_number, address FROM User WHERE user_id = ?", (id,))
         results = self.cursor.fetchone()
 
         employee_name = results[0] + ' ' + results[1]

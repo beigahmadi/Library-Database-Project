@@ -10,10 +10,11 @@ Last modified: March. 2025
 """
 from datetime import datetime, date
 
+from controller.search import SearchController
+
 
 class EmployeeView:
-
-    def __init__ (self, id, controller):
+    def __init__(self, id, controller):
         self.id = id
         self.controller = controller
 
@@ -37,7 +38,7 @@ class EmployeeView:
 
         obj_holder.append(input("Enter address: "))
         obj_holder.append(input("Enter phone number: "))
-        
+
         date_joined_input = input("Enter date of account creation (YYYY-MM-DD) [leave blank for today]: ")
         if not date_joined_input:
             date_joined = date.today()
@@ -59,15 +60,54 @@ class EmployeeView:
                 break
             except ValueError:
                 print("Invalid total charge. Please enter a valid number.\n")
-        
+
         self.controller.insert_user(obj_holder)
-    
+
     def library_search(self):
-        title = input("Please enter the title of the item you are searching for: ")
-        results = self.controller.search_library_database_by_title(title)
-        print("Search results (ID, Type, Name, Publication Date, Author/Artist, Publisher, Available/Total Copies):")
-        for tuple in results:
-            print(tuple)
+        search_menu = (
+            "Please choose the search option among the following:\n"
+            "1. Search by title\n"
+            "2. Search by author\n"
+            "3. Search by item type\n"
+            "4. Search before a specific date\n"
+            "5. Search after a specific date\n"
+            "6. Back to main menu\n"
+        )
+
+        while True:
+            choice = input(search_menu).strip()
+            if choice == '1':
+                title = input("Enter the title of the item: ").strip()
+                results = self.controller.search_library_database_by_title(title)
+                break
+            elif choice == '2':
+                author = input("Enter the author of the item: ").strip()
+                results = self.controller.search_by_author_name(author)
+                break
+            elif choice == '3':
+                item_type = input("Enter the item type (e.g., Book, DVD): ").strip()
+                results = self.controller.search_by_item_type(item_type)
+                break
+            elif choice == '4':
+                target_date = input("Enter the target date (e.g., 1990-12-01): ").strip()
+                results = self.controller.search_before_target_date(target_date)
+                break
+            elif choice == '5':
+                target_date = input("Enter the target date (e.g., 1990-12-01): ").strip()
+                results = self.controller.search_after_target_date(target_date)
+                break
+            elif choice == '6':
+                self.show_employee_interface()
+                return
+            else:
+                print("Invalid input. Please try again.\n")
+
+        print("\nSearch results (ID, Type, Name, Publication Date, Author/Artist, Publisher, Available/Total Copies):")
+        if results:
+            for record in results:
+                print(record)
+        else:
+            print("No results found.")
 
     def item_return(self):
         pass
@@ -96,7 +136,7 @@ class EmployeeView:
             if self.controller.search_library_database_by_id(id) is not None:
                 break
             print("Invalid ID. Please enter a valid item ID.")
-        
+
         while True:
             num = input("Please enter the number of copies to insert: ")
             try:
@@ -108,17 +148,16 @@ class EmployeeView:
         for _ in range(num):
             self.controller.insert_library_record(id)
 
-
     def show_employee_interface(self):
         employee_info = self.controller.fetch_employee_info(self.id)
-        print("Welcome employee", employee_info[0], "\nYour current salary is $", employee_info[1])
+        print("Welcome employee", employee_info[0])
         input_table = {
-            '1' : self.user_insertion,
-            '2' : self.library_search,
-            '3' : self.item_return,
-            '4' : self.item_insertion,
-            '5' : self.record_insertion,
-            '0' : lambda: (print("Exiting..."), exit(0)[-1])
+            '1': self.user_insertion,
+            '2': self.library_search,
+            '3': self.item_return,
+            '4': self.item_insertion,
+            '5': self.record_insertion,
+            '0': lambda: (print("Exiting..."), exit(0)[-1])
         }
 
         while True:

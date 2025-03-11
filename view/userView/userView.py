@@ -16,13 +16,52 @@ class UserView:
     def __init__ (self, id, controller):
         self.id = id
         self.controller = controller
-    
+
     def library_search(self):
-        title = input("Please enter the title of the item you are searching for: ")
-        results = self.controller.search_library_database_by_title(title)
-        print("Search results (ID, Type, Name, Publication Date, Author/Artist, Publisher, Available/Total Copies):")
-        for tuple in results:
-            print(tuple)
+        search_menu = (
+            "Please choose the search option among the following:\n"
+            "1. Search by title\n"
+            "2. Search by author\n"
+            "3. Search by item type\n"
+            "4. Search before a specific date\n"
+            "5. Search after a specific date\n"
+            "6. Back to main menu\n"
+        )
+
+        while True:
+            choice = input(search_menu).strip()
+            if choice == '1':
+                title = input("Enter the title of the item: ").strip()
+                results = self.controller.search_library_database_by_title(title)
+                break
+            elif choice == '2':
+                author = input("Enter the author of the item: ").strip()
+                results = self.controller.search_by_author_name(author)
+                break
+            elif choice == '3':
+                item_type = input("Enter the item type (e.g., Book, DVD): ").strip()
+                results = self.controller.search_by_item_type(item_type)
+                break
+            elif choice == '4':
+                target_date = input("Enter the target date (e.g., 1990-12-01): ").strip()
+                results = self.controller.search_before_target_date(target_date)
+                break
+            elif choice == '5':
+                target_date = input("Enter the target date (e.g., 1990-12-01): ").strip()
+                results = self.controller.search_after_target_date(target_date)
+                break
+            elif choice == '6':
+                self.show_user_interface()
+                return
+            else:
+                print("Invalid input. Please try again.\n")
+
+        print("\nSearch results (ID, Type, Name, Publication Date, Author/Artist, Publisher, Available/Total Copies):")
+        if results:
+            for record in results:
+                print(record)
+        else:
+            print("No results found.")
 
     def library_borrow(self):
         while True:
@@ -36,10 +75,8 @@ class UserView:
         pass
 
     def register_for_volunteer(self):
-        obj_holder = []
-        obj_holder.append(str(date.today()))
+        obj_holder = [str(date.today()), 0.0]
 
-        obj_holder.append(0.0)
         self.controller.insert_volunteer_employee(obj_holder, self.id)
 
     def request_help(self):
