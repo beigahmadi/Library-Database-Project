@@ -38,13 +38,13 @@ class SearchController:
         return self.cursor.fetchone()
 
     def search_by_author_name(self, author_name):
-        query = "SELECT * FROM Catalog WHERE author_or_artist = ?"
-        self.cursor.execute(query, (author_name,))
+        query = "SELECT * FROM Catalog WHERE author_or_artist LIKE ?"
+        self.cursor.execute(query, ('%' + author_name + '%',))
         return self.cursor.fetchall()
 
     def search_by_title_and_author_name(self, title, author_name):
-        query = "SELECT * FROM Catalog WHERE author_or_artist = ? AND title = ?"
-        self.cursor.execute(query, (author_name, title))
+        query = "SELECT * FROM Catalog WHERE author_or_artist LIKE ? AND title LIKE ?"
+        self.cursor.execute(query, ('%' + author_name + '%', '%' + title + '%'))
         return self.cursor.fetchall()
 
     def search_by_item_type(self, item_type):
