@@ -24,7 +24,7 @@ class SearchController:
     def search_library_database_by_id(self, id):
         query = "SELECT * FROM Catalog WHERE item_id = ?"
         self.cursor.execute(query, (id,))
-        return self.fetch_item_availability(self.cursor.fetchone())
+        return self.fetch_item_availability(self.cursor.fetchall())
 
     def search_by_author_name(self, author_name):
         query = "SELECT * FROM Catalog WHERE author_or_artist LIKE ?"
@@ -50,18 +50,17 @@ class SearchController:
         query = "SELECT * FROM Catalog WHERE publication_date >= ?"
         self.cursor.execute(query, (target_date,))
         
-    
     def fetch_item_availability(self, items):
         results = []
-        for tuple in items:
-            query = "SELECT COUNT(*) FROM Record WHERE item_id = ? AND available = True"
-            self.cursor.execute(query, (tuple[0],))
+        for item in items:
+            query = "SELECT COUNT(*) FROM Record WHERE item_id = ? AND available = 1"
+            self.cursor.execute(query, (item[0],))
             total = str(self.cursor.fetchone()[0]) + '/'
             query = "SELECT COUNT(*) FROM Record WHERE item_id = ?"
-            self.cursor.execute(query, (tuple[0],))
+            self.cursor.execute(query, (item[0],))
             total += str(self.cursor.fetchone()[0])
-            tuple = tuple + (total,)
-            results.append(tuple)
+            item = item + (total,)
+            results.append(item)
         return results
 
     def close_connection(self):

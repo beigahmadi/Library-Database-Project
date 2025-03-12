@@ -26,7 +26,7 @@ class DatabaseController(SearchController):
 
     def fetch_library_loans(self, id):
         self.cursor.execute(
-            "SELECT loan_id, record_id, julianday(due_date) - julianday(loan_date) AS date_diff FROM Loan WHERE user_id = ?",
+            "SELECT loan_id, record_id, julianday(due_date) - julianday('now') AS date_diff FROM Loan WHERE return_date IS NULL AND user_id = ?",
             (id,)
         )
         results = []
@@ -36,7 +36,7 @@ class DatabaseController(SearchController):
                 (tuple[1],)
             )
             item = self.cursor.fetchone()
-            result = (tuple[0], item[0], item[1], item[2], tuple[2])
+            result = (tuple[0], item[0], item[1], item[2], int(tuple[2]))
             results.append(result)
 
         return results
@@ -61,7 +61,7 @@ class DatabaseController(SearchController):
     def insert_library_record(self, id):
         self.cursor.execute(
             "INSERT INTO Record (item_id, available) VALUES (?, ?)",
-            (id, True)
+            (id, 1)
         )
         self.connection.commit()
         print("Record inserted successfully.")
@@ -90,21 +90,44 @@ class DatabaseController(SearchController):
         print("Employee added successfully.")
 
     def borrow_library_record(self, user_id, item_id):
-        self.cursor.execute("SELECT record_id FROM Record WHERE item_id = ? AND available = True", (item_id,))
-        record_id = self.cursor.fetchone()[0]
+        self.cursor.execute("SELECT C.item_id FROM Catalog C JOIN Record R on C.item_id = R.item_id JOIN Loan L on R.record_id = L.record_id WHERE L.return_date IS NULL and L.user_id = ?",
+                            (user_id,)) #stop the user from borrowing multiple copies of the same book
+        if self.cursor.fetchone():
+            print("Only one copy of a given book may be borrowed at one time.")
+            return
 
-        if record_id:
-            self.cursor.execute("UPDATE Record SET available = False WHERE record_id = ?", (record_id,))
-            self.connection.commit()
-
-            self.cursor.execute(
-                "INSERT INTO Loan (record_id, user_id, loan_date, due_date) VALUES (?, ?, ?, ?)",
-                (record_id, user_id, str(date.today()), str(date.today() + timedelta(days=21)))
-            )
-            self.connection.commit()
-            print("Item borrowed successfully.")
-        else:
+        self.cursor.execute("SELECT record_id FROM Record WHERE item_id = ? AND available = 1", (item_id,))
+        result = self.cursor.fetchone()
+        if result is None:
             print("No copies available.")
+            return
+        record_id = result[0]
+
+        self.cursor.execute("UPDATE Record SET available = 0 WHERE record_id = ?", (record_id,))
+        self.connection.commit()
+
+        self.cursor.execute(
+            "INSERT INTO Loan (record_id, user_id, loan_date, due_date) VALUES (?, ?, ?, ?)",
+            (record_id, user_id, str(date.today()), str(date.today() + timedelta(days=21)))
+        )
+        self.connection.commit()
+        print("Item borrowed successfully.")
+
+    def return_library_record(self, user_id, item_id):
+        self.cursor.execute("SELECT L.loan_id, L.record_id, julianday('now') - julianday(due_date) FROM Loan L JOIN Record R ON L.record_id = R.record_id WHERE R.item_id = ? AND L.user_id = ? AND return_date IS NULL",
+                            (item_id, user_id,))
+        result = self.cursor.fetchone()
+        if result is None:
+            print("You are not currently borrowing this item.")
+            return
+        loan_id, record_id, overdue = result
+        fine = overdue // 2 if overdue > 0 else 0
+
+        self.cursor.execute("UPDATE Loan SET fine_charged = ?, return_date = ? WHERE loan_id = ?",(fine, date.today(), loan_id))
+        self.cursor.execute("UPDATE Record SET available = 1 WHERE record_id = ?", (record_id,))
+        if fine > 0:
+            self.cursor.execute("UPDATE User SET total_charge = total_charge + ? WHERE user_id = ?", (fine, user_id,))
+        self.connection.commit()
 
     def validate_id(self, id, user):
         if user:

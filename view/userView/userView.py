@@ -78,6 +78,14 @@ class UserView:
             print("Invalid ID. Please enter a valid item ID.")
         self.controller.borrow_library_record(self.id, item_id)
 
+    def library_return(self):
+        while True:
+            item_id = input("Please input the ID of the item you wish to return: ")
+            if self.controller.search_library_database_by_id(item_id) is not None:
+                break
+            print("Invalid ID. Please enter a valid item ID.")
+        self.controller.return_library_record(self.id, item_id)
+
     def event_register(self):
         pass
 
@@ -100,10 +108,11 @@ class UserView:
         input_table = {
             '1' : self.library_search,
             '2' : self.library_borrow,
-            '3' : self.event_register,
-            '4' : self.register_for_volunteer,
-            '5' : self.request_help,
-            '6' : self.fetch_loans,
+            '3' : self.library_return,
+            '4' : self.event_register,
+            '5' : self.register_for_volunteer,
+            '6' : self.request_help,
+            '7' : self.fetch_loans,
             '0' : lambda: (print("Exiting..."), exit(0)[-1])
         }
 
@@ -111,10 +120,11 @@ class UserView:
             prompt = input(
                 "\n1. Find an item in the library\n"
                 "2. Borrow an item from the library\n"
-                "3. Register for an event in the library\n"
-                "4. Volunteer for the library\n"
-                "5. Ask for help from a librarian\n"
-                "6. View existing library loans\n"
+                "3. Return a borrowed item to the library\n"
+                "4. Register for an event in the library\n"
+                "5. Volunteer for the library\n"
+                "6. Ask for help from a librarian\n"
+                "7. View existing library loans\n"
                 "0. Exit\n\n"
             )
             action = input_table.get(prompt, lambda: print("Invalid input, please try again."))
