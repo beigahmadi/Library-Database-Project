@@ -76,6 +76,12 @@ class DatabaseController(SearchController):
         print("User inserted successfully.")
 
     def insert_volunteer_employee(self, obj_holder, id):
+        self.cursor.execute("SELECT employee_id FROM Volunteer WHERE user_id = ?", (id,))
+        result = self.cursor.fetchone()
+        if result is not None:
+            print("You are already an employee, your Employee ID is", result[0])
+            return
+        
         self.cursor.execute(
             "SELECT first_name, last_name, date_of_birth, phone_number, address FROM User WHERE user_id = ?", (id,))
         results = self.cursor.fetchone()
@@ -86,8 +92,15 @@ class DatabaseController(SearchController):
             " VALUES (?, ?, ?, ?, ?, ?)",
             (employee_name, results[2], results[3], results[4], obj_holder[0], obj_holder[1],)
         )
+        employee_id = self.cursor.lastrowid
+
+        self.cursor.execute(
+            "INSERT INTO Volunteer (employee_id, user_id) VALUES (?, ?)",
+            (employee_id, id,)
+        )
+
         self.connection.commit()
-        print("Employee added successfully.")
+        print("Employee added successfully. Your employee ID is", employee_id)
 
     def borrow_library_record(self, user_id, item_id):
         self.cursor.execute("SELECT C.item_id FROM Catalog C JOIN Record R on C.item_id = R.item_id JOIN Loan L on R.record_id = L.record_id WHERE L.return_date IS NULL and L.user_id = ?",
