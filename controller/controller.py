@@ -157,7 +157,7 @@ class DatabaseController(SearchController):
     def check_validity_of_event_id(self, event_id):
         query = "SELECT * FROM Event WHERE event_id = ?"
         self.cursor.execute(query, (event_id,))
-        res = self.cursor.fetchall()  # Retrieves all matching rows
+        res = self.cursor.fetchall()  
         return len(res) > 0
 
     def register_for_event(self, event_id, user_id):
