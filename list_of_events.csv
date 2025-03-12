@@ -1,0 +1,41 @@
+ID,Name,Type,Location,Age Range,Event Time
+1,Music Festival,Music,New York,18+,2025-06-01 10:00:00
+2,Comedy Night,Comedy,Los Angeles,21+,2025-06-02 10:00:00
+3,Art Exhibition,Art,Chicago,All Ages,2025-06-03 10:00:00
+4,Sports Championship,Sports,Houston,All Ages,2025-06-04 10:00:00
+5,Theater Play,Theater,San Francisco,16+,2025-06-05 10:00:00
+6,Tech Conference,Conference,Miami,18+,2025-06-06 10:00:00
+7,Cooking Workshop,Workshop,Boston,All Ages,2025-06-07 10:00:00
+8,Startup Pitch,Seminar,Atlanta,21+,2025-06-08 10:00:00
+9,Dance Festival,Dance,Seattle,All Ages,2025-06-09 10:00:00
+10,Film Screening,Film,Denver,18+,2025-06-10 10:00:00
+11,Literature Reading,Literature,Dallas,All Ages,2025-06-11 10:00:00
+12,Gaming Expo,Gaming,Washington DC,16+,2025-06-12 10:00:00
+13,Trade Show,Trade Show,Philadelphia,18+,2025-06-13 10:00:00
+14,Product Launch,Launch,Phoenix,21+,2025-06-14 10:00:00
+15,Book Signing,Literature,Las Vegas,All Ages,2025-06-15 10:00:00
+16,Poetry Slam,Art,San Diego,16+,2025-06-16 10:00:00
+17,Stand-Up Comedy,Comedy,New Orleans,21+,2025-06-17 10:00:00
+18,Food Tasting,Food,Austin,All Ages,2025-06-18 10:00:00
+19,Yoga Session,Wellness,Portland,18+,2025-06-19 10:00:00
+20,Marathon,Sports,San Antonio,All Ages,2025-06-20 10:00:00
+21,Cycling Race,Sports,Minneapolis,16+,2025-06-21 10:00:00
+22,Holiday Celebration,Festival,Orlando,All Ages,2025-06-22 10:00:00
+23,Cultural Fair,Festival,Nashville,All Ages,2025-06-23 10:00:00
+24,Fashion Show,Art,Detroit,21+,2025-06-24 10:00:00
+25,Talent Show,Entertainment,Cleveland,All Ages,2025-06-25 10:00:00
+26,Open Mic Night,Music,Cincinnati,18+,2025-06-26 10:00:00
+27,Science Expo,Conference,Pittsburgh,All Ages,2025-06-27 10:00:00
+28,Kids Camp,Workshop,Salt Lake City,All Ages,2025-06-28 10:00:00
+29,Outdoor Concert,Music,Kansas City,16+,2025-06-29 10:00:00
+30,Night Market,Festival,Indianapolis,21+,2025-06-30 10:00:00
+31,Graduation Ceremony,Ceremony,Charlotte,All Ages,2025-07-01 10:00:00
+32,Auto Expo,Expo,Raleigh,18+,2025-07-02 10:00:00
+33,Wine Tasting,Food,St. Louis,21+,2025-07-03 10:00:00
+34,Art Exhibition,Art,Tampa,All Ages,2025-07-04 10:00:00
+35,Networking Event,Networking,Sacramento,18+,2025-07-05 10:00:00
+36,Webinar,Webinar,Columbus,All Ages,2025-07-06 10:00:00
+37,Tech Meetup,Conference,Oklahoma City,16+,2025-07-07 10:00:00
+38,Cooking Class,Workshop,Baltimore,All Ages,2025-07-08 10:00:00
+39,Nightclub Party,Music,Milwaukee,21+,2025-07-09 10:00:00
+40,Charity Gala,Charity,Albuquerque,18+,2025-07-10 10:00:00

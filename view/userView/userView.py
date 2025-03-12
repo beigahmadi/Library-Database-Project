@@ -14,7 +14,7 @@ from datetime import date
 
 class UserView:
 
-    def __init__ (self, id, controller):
+    def __init__(self, id, controller):
         self.id = id
         self.controller = controller
 
@@ -87,7 +87,29 @@ class UserView:
         self.controller.return_library_record(self.id, item_id)
 
     def event_register(self):
-        pass
+        print("\na list of events has been saved in your computer,"
+              " please review them and enter the event id you prefer to register\n")
+        results = self.controller.get_list_of_events()
+        print("\nSearch results (ID, Name, Type, Location, Age Range, Event Time):")
+        headers = ["ID", "Name", "Type", "Location", "Age Range", "Event Time"]
+
+        with open("list_of_events.csv", "w", newline="") as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(headers)
+            writer.writerows(results)
+        if results:
+            for record in results:
+                print(record)
+        else:
+            print("No results found.")
+        while True:
+            event_id = input("Please input the ID of the event you wish to return: ")
+            if self.controller.check_validity_of_event_id(event_id):
+                self.controller.register_for_event(event_id, self.id)
+                break
+            else:
+                print("\nInvalid ID. Please enter a valid event ID.\n")
+
 
     def register_for_volunteer(self):
         obj_holder = [str(date.today()), 0.0]
@@ -95,7 +117,7 @@ class UserView:
         self.controller.insert_volunteer_employee(obj_holder, self.id)
 
     def request_help(self):
-        pass
+     pass
 
     def fetch_loans(self):
         print("Loan ID, Item ID, Type, Name, Days Remaining")
@@ -104,16 +126,17 @@ class UserView:
 
     def show_user_interface(self):
         user_info = self.controller.fetch_user_info(self.id)
-        print("Welcome user", user_info[0] + ' ' + user_info[1], "\nYou currently have $", user_info[2], "in outstanding charges.")
+        print("Welcome user", user_info[0] + ' ' + user_info[1], "\nYou currently have $", user_info[2],
+              "in outstanding charges.")
         input_table = {
-            '1' : self.library_search,
-            '2' : self.library_borrow,
-            '3' : self.library_return,
-            '4' : self.event_register,
-            '5' : self.register_for_volunteer,
-            '6' : self.request_help,
-            '7' : self.fetch_loans,
-            '0' : lambda: (print("Exiting..."), exit(0)[-1])
+            '1': self.library_search,
+            '2': self.library_borrow,
+            '3': self.library_return,
+            '4': self.event_register,
+            '5': self.register_for_volunteer,
+            '6': self.request_help,
+            '7': self.fetch_loans,
+            '0': lambda: (print("Exiting..."), exit(0)[-1])
         }
 
         while True:
@@ -129,5 +152,3 @@ class UserView:
             )
             action = input_table.get(prompt, lambda: print("Invalid input, please try again."))
             action()
-
-    

@@ -149,3 +149,22 @@ class DatabaseController(SearchController):
             query = "SELECT 1 FROM Employee WHERE employee_id = ?"
         self.cursor.execute(query, (id,))
         return self.cursor.fetchone() is not None
+
+    def get_list_of_events(self):
+        query = "SELECT * FROM Event"
+        return self.cursor.execute(query)
+
+    def check_validity_of_event_id(self, event_id):
+        query = "SELECT * FROM Event WHERE event_id = ?"
+        self.cursor.execute(query, (event_id,))
+        res = self.cursor.fetchall()  # Retrieves all matching rows
+        return len(res) > 0
+
+    def register_for_event(self, event_id, user_id):
+        if self.check_validity_of_event_id(event_id):
+           query = "INSERT INTO Event_Participant (event_id, user_id) VALUES (?, ?)"
+           self.cursor.execute(query, (event_id, user_id,))
+           self.connection.commit()
+           print("Event registered successfully.")
+        else:
+          print("insertion failed.")
