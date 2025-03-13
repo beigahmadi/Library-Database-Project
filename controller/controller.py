@@ -168,3 +168,7 @@ class DatabaseController(SearchController):
            print("Event registered successfully.")
         else:
           print("insertion failed.")
+
+    def print_list_of_event_participants(self):
+        query = "SELECT * FROM Event_Participant"
+        return self.cursor.execute(query).fetchall()

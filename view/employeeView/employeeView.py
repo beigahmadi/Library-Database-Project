@@ -134,6 +134,12 @@ class EmployeeView:
         object_holder.append(pub_name)
         self.controller.insert_library_database(object_holder)
 
+    def show_list_event_participants(self):
+        print("\nEvent participants: (Event ID, Registered User ID)")
+        print(self.controller.print_list_of_event_participants())
+        print('\n')
+        #self.show_employee_interface()
+
     def record_insertion(self):
         while True:
             id = input("Please enter the item ID: ")
@@ -161,6 +167,7 @@ class EmployeeView:
             '3': self.item_return,
             '4': self.item_insertion,
             '5': self.record_insertion,
+            '6' : self.show_list_event_participants,
             '0': lambda: (print("Exiting..."), exit(0)[-1])
         }
 
@@ -171,6 +178,7 @@ class EmployeeView:
                 "3. Return a borrowed item\n"
                 "4. Add an item to the library\n"
                 "5. Add a record to the library\n"
+                "6. View list of event participants\n"
                 "0. Exit\n\n"
             )
             action = input_table.get(prompt, lambda: print("Invalid input, please try again."))
