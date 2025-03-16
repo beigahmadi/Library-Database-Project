@@ -9,7 +9,7 @@ Author(s): Mahdi Beigahmadi, Cole Scott Robertson
 Last modified: March. 2025
 """
 import csv
-from datetime import date
+from datetime import datetime, date
 
 
 class UserView:
@@ -86,6 +86,24 @@ class UserView:
             print("Invalid ID. Please enter a valid item ID.")
         self.controller.return_library_record(self.id, item_id)
 
+    def library_donate(self):
+        object_holder = []
+        object_holder.append(input("Please enter the item type: "))
+        object_holder.append(input("Please enter the item title: "))
+        while True:
+            pub_date = input("Please enter the publication date (YYYY-MM-DD): ")
+            try:
+                pub_date = datetime.strptime(pub_date, "%Y-%m-%d").date()
+                object_holder.append(pub_date)
+                break
+            except ValueError:
+                print("Invalid date format for date of publication. Please use YYYY-MM-DD.")
+        art_name = input("Please enter the artist's name: ")
+        object_holder.append(art_name)
+        pub_name = input("Please enter the publisher's name: ")
+        object_holder.append(pub_name)
+        self.controller.insert_library_database(object_holder)
+
     def event_register(self):
         print("\na list of events has been saved in your computer,"
               " please review them and enter the event id you prefer to register\n")
@@ -132,10 +150,11 @@ class UserView:
             '1': self.library_search,
             '2': self.library_borrow,
             '3': self.library_return,
-            '4': self.event_register,
-            '5': self.register_for_volunteer,
-            '6': self.request_help,
-            '7': self.fetch_loans,
+            '4': self.library_donate,
+            '5': self.event_register,
+            '6': self.register_for_volunteer,
+            '7': self.request_help,
+            '8': self.fetch_loans,
             '0': lambda: (print("Exiting..."), exit(0)[-1])
         }
 
@@ -144,10 +163,11 @@ class UserView:
                 "\n1. Find an item in the library\n"
                 "2. Borrow an item from the library\n"
                 "3. Return a borrowed item to the library\n"
-                "4. Register for an event in the library\n"
-                "5. Volunteer for the library\n"
-                "6. Ask for help from a librarian\n"
-                "7. View existing library loans\n"
+                "4. Donate an item to the library\n"
+                "5. Register for an event in the library\n"
+                "6. Volunteer for the library\n"
+                "7. Ask for help from a librarian\n"
+                "8. View existing library loans\n"
                 "0. Exit\n\n"
             )
             action = input_table.get(prompt, lambda: print("Invalid input, please try again."))
