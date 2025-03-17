@@ -171,4 +171,27 @@ class DatabaseController(SearchController):
 
     def print_list_of_event_participants(self):
         query = "SELECT * FROM Event_Participant"
-        return self.cursor.execute(query).fetchall()
+        return self.cursor.execute(query).fetchall()\
+
+
+    def make_charge_payment(self, user_id, amount):
+
+        try:
+            numeric_amount = float(amount)
+        except ValueError:
+            print("Invalid payment amount. Please enter a valid numeric value.")
+            return
+
+        update_query = "UPDATE User SET total_charge = total_charge - ? WHERE user_id = ?"
+        self.cursor.execute(update_query, (numeric_amount, user_id))
+        self.connection.commit()
+
+        select_query = "SELECT total_charge FROM User WHERE user_id = ?"
+        self.cursor.execute(select_query, (user_id,))
+        result = self.cursor.fetchone()
+
+        if result:
+            print("Your current balance is:", result[0])
+        else:
+            print("User not found.")
+
