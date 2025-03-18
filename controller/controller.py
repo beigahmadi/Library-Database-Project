@@ -50,6 +50,14 @@ class DatabaseController(SearchController):
         query = "SELECT employee_name, salary FROM Employee WHERE employee_id = ?"
         self.cursor.execute(query, (id,))
         return self.cursor.fetchone()
+    
+    def fetch_requests(self, id):
+        query = "SELECT request_id, message, response FROM Request WHERE user_id = ?"
+        self.cursor.execute(query, (id,))
+        results = []
+        for value in self.cursor.fetchall():
+            results.append((value[0], value[1], value[2] if value[2] is not None else "Pending"))
+        return results
 
     def insert_library_database(self, object_holder):
         self.cursor.execute(
@@ -101,6 +109,13 @@ class DatabaseController(SearchController):
 
         self.connection.commit()
         print("Employee added successfully. Your employee ID is", employee_id)
+    
+    def insert_request(self, message, id):
+        self.cursor.execute(
+            "INSERT INTO Request (user_id, message) VALUES (?, ?)",
+            (message, id,)
+        )
+        print("Request submitted successfully. An employee will reply shortly.")
 
     def borrow_library_record(self, user_id, item_id):
         self.cursor.execute("SELECT C.item_id FROM Catalog C JOIN Record R on C.item_id = R.item_id JOIN Loan L on R.record_id = L.record_id WHERE L.return_date IS NULL and L.user_id = ?",

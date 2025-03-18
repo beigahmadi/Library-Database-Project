@@ -146,8 +146,8 @@ class UserView:
 
     def fetch_loans(self):
         print("Loan ID, Item ID, Type, Name, Days Remaining")
-        for tuple in self.controller.fetch_library_loans(self.id):
-            print(tuple)
+        for value in self.controller.fetch_library_loans(self.id):
+            print(value)
 
     def make_payment(self):
         customer_input = input("\nWould you like to make a payment? (Y/N): ")
@@ -163,6 +163,11 @@ class UserView:
         else:
             self.show_user_interface()
 
+    def fetch_requests(self):
+        print("Request ID, Message, Response")
+        for value in self.controller.fetch_requests(self.id):
+            print(value)
+
     def show_user_interface(self):
         user_info = self.controller.fetch_user_info(self.id)
         print("Welcome user", user_info[0] + ' ' + user_info[1], "\nYou currently have $", user_info[2],
@@ -177,6 +182,7 @@ class UserView:
             '7': self.request_help,
             '8': self.fetch_loans,
             '9': self.make_payment,
+            '10': self.fetch_requests,
             '0': lambda: (print("Exiting..."), exit(0)[-1])
         }
 
@@ -190,7 +196,8 @@ class UserView:
                 "6. Volunteer for the library\n"
                 "7. Ask for help from a librarian\n"
                 "8. View existing library loans\n"
-                "9. Make payment to your charges\n"
+                "9. Pay outstanding charges\n"
+                "10. View existing help requests\n"
                 "0. Exit\n\n"
             )
             action = input_table.get(prompt, lambda: print("Invalid input, please try again."))
