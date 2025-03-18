@@ -158,6 +158,16 @@ class EmployeeView:
         for _ in range(num):
             self.controller.insert_library_record(id)
 
+    def fetch_requests(self):
+        print("Request ID, Message")
+        for value in self.controller.fetch_employee_requests():
+            print(value)
+
+    def request_reply(self):
+        request_id = input("Please enter the ID of the request you wish to reply to: ")
+        reply = input("Please enter your reply: ")
+        self.controller.request_reply_update(reply, request_id)
+
     def show_employee_interface(self):
         employee_info = self.controller.fetch_employee_info(self.id)
         print("Welcome employee", employee_info[0])
@@ -167,7 +177,9 @@ class EmployeeView:
             '3': self.item_return,
             '4': self.item_insertion,
             '5': self.record_insertion,
-            '6' : self.show_list_event_participants,
+            '6': self.show_list_event_participants,
+            '7': self.fetch_requests,
+            '8': self.request_reply,
             '0': lambda: (print("Exiting..."), exit(0)[-1])
         }
 
@@ -179,6 +191,8 @@ class EmployeeView:
                 "4. Add an item to the library\n"
                 "5. Add a record to the library\n"
                 "6. View list of event participants\n"
+                "7. View unresolved help requests\n"
+                "8. Reply to a help request\n"
                 "0. Exit\n\n"
             )
             action = input_table.get(prompt, lambda: print("Invalid input, please try again."))

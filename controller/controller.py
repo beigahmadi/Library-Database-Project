@@ -41,23 +41,6 @@ class DatabaseController(SearchController):
 
         return results
 
-    def fetch_user_info(self, id):
-        query = "SELECT first_name, last_name, total_charge FROM User WHERE user_id = ?"
-        self.cursor.execute(query, (id,))
-        return self.cursor.fetchone()
-
-    def fetch_employee_info(self, id):
-        query = "SELECT employee_name, salary FROM Employee WHERE employee_id = ?"
-        self.cursor.execute(query, (id,))
-        return self.cursor.fetchone()
-    
-    def fetch_requests(self, id):
-        query = "SELECT request_id, message, response FROM Request WHERE user_id = ?"
-        self.cursor.execute(query, (id,))
-        results = []
-        for value in self.cursor.fetchall():
-            results.append((value[0], value[1], (value[2] if value[2] is not None else "Pending")))
-        return results
 
     def insert_library_database(self, object_holder):
         self.cursor.execute(
@@ -191,7 +174,6 @@ class DatabaseController(SearchController):
 
 
     def make_charge_payment(self, user_id, amount):
-
         try:
             numeric_amount = float(amount)
         except ValueError:
@@ -210,4 +192,10 @@ class DatabaseController(SearchController):
             print("Your current balance is:", result[0])
         else:
             print("User not found.")
+
+    def request_reply_update(self, reply, id):
+        query = "UPDATE Request SET response = ? WHERE request_id = ?"
+        self.cursor.execute(query, (reply, id,))
+        self.connection.commit()
+        print("Request updated successfully.")
 

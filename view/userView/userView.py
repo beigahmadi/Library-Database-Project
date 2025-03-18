@@ -169,7 +169,7 @@ class UserView:
             self.show_user_interface()
 
     def fetch_requests(self):
-        results = self.controller.fetch_requests(self.id)
+        results = self.controller.fetch_user_requests(self.id)
         if not results:
             print("You have no requests at this time.")
             return

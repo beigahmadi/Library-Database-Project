@@ -62,6 +62,28 @@ class SearchController:
             item = item + (total,)
             results.append(item)
         return results
+    
+    def fetch_user_info(self, id):
+        query = "SELECT first_name, last_name, total_charge FROM User WHERE user_id = ?"
+        self.cursor.execute(query, (id,))
+        return self.cursor.fetchone()
+
+    def fetch_employee_info(self, id):
+        query = "SELECT employee_name, salary FROM Employee WHERE employee_id = ?"
+        self.cursor.execute(query, (id,))
+        return self.cursor.fetchone()
+    
+    def fetch_user_requests(self, id):
+        query = "SELECT request_id, message, response FROM Request WHERE user_id = ?"
+        self.cursor.execute(query, (id,))
+        results = []
+        for value in self.cursor.fetchall():
+            results.append((value[0], value[1], (value[2] if value[2] is not None else "Pending")))
+        return results
+    
+    def fetch_employee_requests(self):
+        self.cursor.execute("SELECT request_id, message FROM Request WHERE response IS NULL")
+        return self.cursor.fetchall()
 
     def close_connection(self):
         self.connection.close()
