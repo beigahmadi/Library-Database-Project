@@ -148,6 +148,10 @@ class DatabaseController(SearchController):
             query = "SELECT 1 FROM Employee WHERE employee_id = ?"
         self.cursor.execute(query, (id,))
         return self.cursor.fetchone() is not None
+    
+    def validate_request_id(self, id):
+        self.cursor.execute("SELECT 1 FROM Request WHERE request_id = ? AND response IS NULL", (id,))
+        return self.cursor.fetchone() is not None
 
     def get_list_of_events(self):
         query = "SELECT * FROM Event"

@@ -164,7 +164,11 @@ class EmployeeView:
             print(value)
 
     def request_reply(self):
-        request_id = input("Please enter the ID of the request you wish to reply to: ")
+        while True:
+            request_id = input("Please enter the ID of the request you wish to reply to: ")
+            if self.controller.validate_request_id(request_id):
+                break
+            print("Invalid ID. Please enter a valid request ID.")
         reply = input("Please enter your reply: ")
         self.controller.request_reply_update(reply, request_id)
 
