@@ -142,12 +142,17 @@ class UserView:
         self.controller.insert_volunteer_employee(obj_holder, self.id)
 
     def request_help(self):
-     pass
+        message = input("Please enter your request: ")
+        self.controller.insert_request(message, self.id)
 
     def fetch_loans(self):
+        results = self.controller.fetch_library_loans(self.id)
+        if not results:
+            print("You have no loans at this time.")
+            return
         print("Loan ID, Item ID, Type, Name, Days Remaining")
-        for value in self.controller.fetch_library_loans(self.id):
-            print(value)
+        for result in results:
+            print(result)
 
     def make_payment(self):
         customer_input = input("\nWould you like to make a payment? (Y/N): ")
@@ -164,9 +169,13 @@ class UserView:
             self.show_user_interface()
 
     def fetch_requests(self):
+        results = self.controller.fetch_requests(self.id)
+        if not results:
+            print("You have no requests at this time.")
+            return
         print("Request ID, Message, Response")
-        for value in self.controller.fetch_requests(self.id):
-            print(value)
+        for result in results:
+            print(result)
 
     def show_user_interface(self):
         user_info = self.controller.fetch_user_info(self.id)
@@ -190,7 +199,7 @@ class UserView:
             prompt = input(
                 "\n1. Find an item in the library\n"
                 "2. Borrow an item from the library\n"
-                "3. Return a borrowed item to the library\n"
+                "3. Return an item to the library\n"
                 "4. Donate an item to the library\n"
                 "5. Register for an event in the library\n"
                 "6. Volunteer for the library\n"

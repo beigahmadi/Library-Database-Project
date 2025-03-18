@@ -56,7 +56,7 @@ class DatabaseController(SearchController):
         self.cursor.execute(query, (id,))
         results = []
         for value in self.cursor.fetchall():
-            results.append((value[0], value[1], value[2] if value[2] is not None else "Pending"))
+            results.append((value[0], value[1], (value[2] if value[2] is not None else "Pending")))
         return results
 
     def insert_library_database(self, object_holder):
@@ -113,8 +113,9 @@ class DatabaseController(SearchController):
     def insert_request(self, message, id):
         self.cursor.execute(
             "INSERT INTO Request (user_id, message) VALUES (?, ?)",
-            (message, id,)
+            (id, message,)
         )
+        self.connection.commit()
         print("Request submitted successfully. An employee will reply shortly.")
 
     def borrow_library_record(self, user_id, item_id):
