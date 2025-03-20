@@ -109,7 +109,8 @@ class UserView:
         object_holder.append(art_name)
         pub_name = input("Please enter the publisher's name: ")
         object_holder.append(pub_name)
-        self.controller.insert_library_database(object_holder)
+        item_id = self.controller.insert_library_database(object_holder)
+        self.controller.insert_library_record(item_id)
 
     def event_register(self):
         print("\na list of events has been saved in your computer,"

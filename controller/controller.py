@@ -46,8 +46,10 @@ class DatabaseController(SearchController):
         self.cursor.execute(
             "INSERT INTO Catalog (item_type, title, publication_date, author_or_artist, publisher) VALUES(?, ?, ?, ?, ?)",
             (object_holder[0], object_holder[1], object_holder[2], object_holder[3], object_holder[4]))
+        id = self.cursor.lastrowid
         self.connection.commit()
         print("Data inserted successfully.")
+        return id
 
     def insert_library_record(self, id):
         self.cursor.execute(
