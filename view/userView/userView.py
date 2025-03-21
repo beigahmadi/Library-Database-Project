@@ -73,7 +73,7 @@ class UserView:
     def library_borrow(self):
         user_info = self.controller.fetch_user_info(self.id)
         while float(user_info[2]) != 0:
-            print("You cannot request an item when you have charges in your account.")
+            print("You cannot request an item when you have outstanding charges.")
             self.make_payment()
             user_info = self.controller.fetch_user_info(self.id)
 
@@ -113,9 +113,8 @@ class UserView:
         self.controller.insert_library_record(item_id)
 
     def event_register(self):
-        print("\na list of events has been saved in your computer,"
-              " please review them and enter the event id you prefer to register\n")
         results = self.controller.get_list_of_events()
+        print("\nA list of all current events has been saved, please enter the ID of the event you wish to register for.\n")
         print("\nSearch results (ID, Name, Type, Location, Age Range, Event Time):")
         headers = ["ID", "Name", "Type", "Location", "Age Range", "Event Time"]
 
@@ -156,18 +155,16 @@ class UserView:
             print(result)
 
     def make_payment(self):
-        customer_input = input("\nWould you like to make a payment? (Y/N): ")
-        if customer_input.upper() == "Y":
-            user_info = self.controller.fetch_user_info(self.id)
-            amount = float(input("\nPlease enter the amount of the payment: "))
-            if amount > float(user_info[2]):
-                print("\nYou cannot make a payment when your amount is greater than the user's charge.")
-                print("Payment Failed, Back to main menu.")
-                self.show_user_interface()
-            else:
-              self.controller.make_charge_payment(self.id, amount)
-        else:
-            self.show_user_interface()
+        user_info = self.controller.fetch_user_info(self.id)
+        while True:
+            try:
+                amount = float(input("\nPlease enter the payment amount: "))
+                if amount <= float(user_info[2]):
+                    break
+                print("Payments must be equal to or less than your outstanding balance. Please enter a valid amount.")
+            except ValueError:
+                print("Invalid format. Please enter a dollar amount.")
+        self.controller.make_charge_payment(self.id, amount)
 
     def fetch_requests(self):
         results = self.controller.fetch_user_requests(self.id)
