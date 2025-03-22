@@ -49,6 +49,7 @@ class SearchController:
     def search_after_target_date(self, target_date):
         query = "SELECT * FROM Catalog WHERE publication_date >= ?"
         self.cursor.execute(query, (target_date,))
+        return self.fetch_item_availability(self.cursor.fetchall())
         
     def fetch_item_availability(self, items):
         results = []
@@ -58,7 +59,11 @@ class SearchController:
             total = str(self.cursor.fetchone()[0]) + '/'
             query = "SELECT COUNT(*) FROM Record WHERE item_id = ?"
             self.cursor.execute(query, (item[0],))
-            total += str(self.cursor.fetchone()[0])
+            totalCopies = self.cursor.fetchone()[0]
+            if totalCopies > 0:
+                total += str(totalCopies)
+            else:
+                total = "Unavailable"
             item = item + (total,)
             results.append(item)
         return results

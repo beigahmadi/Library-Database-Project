@@ -26,7 +26,7 @@ class UserView:
             "3. Search by item type\n"
             "4. Search before a specific date\n"
             "5. Search after a specific date\n"
-            "6. Back to main menu\n"
+            "0. Return to the main menu\n"
         )
 
         while True:
@@ -51,7 +51,7 @@ class UserView:
                 target_date = input("Enter the target date (e.g., 1990-12-01): ").strip()
                 results = self.controller.search_after_target_date(target_date)
                 break
-            elif choice == '6':
+            elif choice == '0':
                 self.show_user_interface()
                 return
             else:

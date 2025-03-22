@@ -138,7 +138,6 @@ class EmployeeView:
         print("\nEvent participants: (Event ID, Registered User ID)")
         print(self.controller.print_list_of_event_participants())
         print('\n')
-        #self.show_employee_interface()
 
     def record_insertion(self):
         while True:
