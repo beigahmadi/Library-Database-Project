@@ -81,7 +81,7 @@ class DatabaseController(SearchController):
 
         employee_name = results[0] + ' ' + results[1]
         self.cursor.execute(
-            "INSERT INTO Employee (employee_name, employee_dob, phone_number, address, employement_date, salary)"
+            "INSERT INTO Employee (employee_name, employee_dob, phone_number, address, employment_date, salary)"
             " VALUES (?, ?, ?, ?, ?, ?)",
             (employee_name, results[2], results[3], results[4], obj_holder[0], obj_holder[1],)
         )
