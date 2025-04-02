@@ -113,9 +113,6 @@ class EmployeeView:
         else:
             print("No results found.")
 
-    def item_return(self):
-        pass
-
     def item_insertion(self):
         object_holder = []
         object_holder.append(input("Please enter the item type: "))
@@ -177,12 +174,11 @@ class EmployeeView:
         input_table = {
             '1': self.user_insertion,
             '2': self.library_search,
-            '3': self.item_return,
-            '4': self.item_insertion,
-            '5': self.record_insertion,
-            '6': self.show_list_event_participants,
-            '7': self.fetch_requests,
-            '8': self.request_reply,
+            '3': self.item_insertion,
+            '4': self.record_insertion,
+            '5': self.show_list_event_participants,
+            '6': self.fetch_requests,
+            '7': self.request_reply,
             '0': lambda: (print("Exiting..."), exit(0)[-1])
         }
 
@@ -190,12 +186,11 @@ class EmployeeView:
             prompt = input(
                 "\n1. Sign up a new user to the library\n"
                 "2. Find an item in library database\n"
-                "3. Return a borrowed item\n"
-                "4. Add an item to the library\n"
-                "5. Add a record to the library\n"
-                "6. View list of event participants\n"
-                "7. View unresolved help requests\n"
-                "8. Reply to a help request\n"
+                "3. Add an item to the library\n"
+                "4. Add a record to the library\n"
+                "5. View list of event participants\n"
+                "6. View unresolved help requests\n"
+                "7. Reply to a help request\n"
                 "0. Exit\n\n"
             )
             action = input_table.get(prompt, lambda: print("Invalid input, please try again."))

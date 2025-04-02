@@ -159,7 +159,7 @@ class UserView:
         while True:
             try:
                 amount = float(input("\nPlease enter the payment amount: "))
-                if amount <= float(user_info[2]):
+                if amount <= float(user_info[2]) and amount >= 0:
                     break
                 print("Payments must be equal to or less than your outstanding balance. Please enter a valid amount.")
             except ValueError:

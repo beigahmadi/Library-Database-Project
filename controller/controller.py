@@ -137,7 +137,23 @@ class DatabaseController(SearchController):
         loan_id, record_id, overdue = result
         fine = overdue // 2 if overdue > 0 else 0
 
-        self.cursor.execute("UPDATE Loan SET fine_charged = ?, return_date = ? WHERE loan_id = ?",(fine, date.today(), loan_id))
+        self.cursor.execute("UPDATE Loan SET return_date = ? WHERE loan_id = ?",(date.today(), loan_id))
+        self.cursor.execute("UPDATE Record SET available = 1 WHERE record_id = ?", (record_id,))
+        if fine > 0:
+            self.cursor.execute("UPDATE User SET total_charge = total_charge + ? WHERE user_id = ?", (fine, user_id,))
+        self.connection.commit()
+
+    def return_library_record_employee(self, item_id):
+        self.cursor.execute("SELECT L.loan_id, L.record_id, julianday('now') - julianday(due_date) FROM Loan L JOIN Record R ON L.record_id = R.record_id WHERE R.item_id = ? AND L.user_id = ? AND return_date IS NULL",
+                            (item_id, user_id,))
+        result = self.cursor.fetchone()
+        if result is None:
+            print("You are not currently borrowing this item.")
+            return
+        loan_id, record_id, overdue = result
+        fine = overdue // 2 if overdue > 0 else 0
+
+        self.cursor.execute("UPDATE Loan SET return_date = ? WHERE loan_id = ?",(date.today(), loan_id))
         self.cursor.execute("UPDATE Record SET available = 1 WHERE record_id = ?", (record_id,))
         if fine > 0:
             self.cursor.execute("UPDATE User SET total_charge = total_charge + ? WHERE user_id = ?", (fine, user_id,))
